@@ -9,11 +9,14 @@ import { Floor } from "@/lib/types";
 interface FloorData {
   floor: Floor;
   fi: number;
+  wF: number;
+  hF: number;
   instability: number;
   damage: number;
   floorW: number;
   floorH: number;
   failureType: string;
+  floorTilt: number;
 }
 
 interface Building3DProps {

@@ -137,11 +137,14 @@ export default function Home() {
       <header className="border-b border-slate-300 bg-white/95 backdrop-blur-sm z-40 shrink-0">
         <div className="px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-6">
-            <div>
-              <h1 className="text-lg font-bold text-slate-800 leading-tight">Capas</h1>
-              <p className="text-slate-400 text-[10px]">
-                {user.name}
-              </p>
+            <div className="flex items-center gap-2">
+              <img src="/logo.png" alt="Telova" className="h-8 w-auto" />
+              <div>
+                <h1 className="text-lg font-bold leading-tight" style={{ color: "#8c52ff" }}>Capas</h1>
+                <p className="text-slate-400 text-[10px]">
+                  {user.name}
+                </p>
+              </div>
             </div>
 
             {/* Stats inline */}
@@ -198,11 +201,11 @@ export default function Home() {
               <button
                 onClick={handleAnalyzeBuilding}
                 disabled={analyzing}
-                className={`px-3 py-1.5 text-xs font-medium rounded transition-colors ${
-                  aiAnalysis
-                    ? "bg-violet-100 text-violet-700 hover:bg-violet-200 ring-1 ring-violet-300"
-                    : "bg-violet-600 hover:bg-violet-500 text-white"
-                }`}
+                className="px-3 py-1.5 text-xs font-medium rounded transition-colors text-white"
+                style={{
+                  backgroundColor: aiAnalysis ? "#8c52ff33" : "#8c52ff",
+                  color: aiAnalysis ? "#8c52ff" : "white",
+                }}
               >
                 {analyzing ? (
                   <span className="flex items-center gap-1.5">
@@ -218,7 +221,8 @@ export default function Home() {
             )}
             <button
               onClick={() => setShowForm(true)}
-              className="px-3 py-1.5 bg-slate-800 hover:bg-slate-700 text-white text-xs font-medium rounded transition-colors"
+              className="px-3 py-1.5 text-white text-xs font-medium rounded transition-colors hover:opacity-90"
+              style={{ backgroundColor: "#00bf63" }}
             >
               + Nuevo recuerdo
             </button>
