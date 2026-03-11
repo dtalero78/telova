@@ -133,95 +133,52 @@ export default function Home() {
 
   return (
     <div className="h-screen flex flex-col bg-[#FAFAFA] overflow-hidden">
-      {/* Header compacto */}
+      {/* Header responsivo */}
       <header className="border-b border-slate-300 bg-white/95 backdrop-blur-sm z-40 shrink-0">
-        <div className="px-4 py-2 flex items-center justify-between">
-          <div className="flex items-center gap-6">
-            <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="Telova" className="h-12 w-auto" />
-              <p className="text-slate-400 text-[10px]">
-                {user.name}
-              </p>
-            </div>
-
-            {/* Stats inline */}
-            <div className="flex items-center gap-4 text-xs">
+        {/* Fila 1: Logo, stats, acciones */}
+        <div className="px-3 py-2 flex items-center justify-between gap-2">
+          <div className="flex items-center gap-3 min-w-0">
+            <img src="/logo.png" alt="Telova" className="h-8 sm:h-10 w-auto shrink-0" />
+            <div className="flex items-center gap-2 text-[10px] sm:text-xs shrink-0">
               <span className="text-slate-500">
-                <span className="text-slate-800 font-bold">{events.length}</span> eventos
+                <span className="text-slate-800 font-bold">{events.length}</span> ev.
               </span>
-              <span className="text-emerald-600">
-                <span className="font-bold">{totalPositive}</span> +
-              </span>
-              <span className="text-red-600">
-                <span className="font-bold">{totalNegative}</span> -
-              </span>
+              <span className="text-emerald-600 font-bold">{totalPositive}+</span>
+              <span className="text-red-600 font-bold">{totalNegative}-</span>
             </div>
-
-            {/* Filtros inline */}
-            <div className="flex items-center gap-1.5">
-              <button
-                onClick={() => setFilterCategory(null)}
-                className={`px-2 py-1 rounded text-[10px] font-medium transition-all ${
-                  filterCategory === null
-                    ? "bg-slate-800 text-white"
-                    : "bg-slate-200 text-slate-500 hover:text-slate-700"
-                }`}
-              >
-                Todas
-              </button>
-              {CATEGORIES.map((cat) => (
-                <button
-                  key={cat.value}
-                  onClick={() =>
-                    setFilterCategory(
-                      filterCategory === cat.value ? null : cat.value
-                    )
-                  }
-                  className={`px-2 py-1 rounded text-[10px] font-medium transition-all ${
-                    filterCategory === cat.value
-                      ? "text-white ring-1 ring-white/50"
-                      : "text-slate-600 hover:text-slate-800"
-                  }`}
-                  style={{
-                    backgroundColor:
-                      filterCategory === cat.value ? cat.color : cat.color + "18",
-                  }}
-                >
-                  {cat.label}
-                </button>
-              ))}
-            </div>
+            <span className="text-slate-400 text-[10px] truncate hidden sm:inline">{user.name}</span>
           </div>
 
-          <div className="flex items-center gap-3">
+          <div className="flex items-center gap-2 shrink-0">
             {events.length > 0 && (
               <button
                 onClick={handleAnalyzeBuilding}
                 disabled={analyzing}
-                className="px-3 py-1.5 text-xs font-medium rounded transition-colors text-white"
+                className="px-2 sm:px-3 py-1.5 text-[10px] sm:text-xs font-medium rounded transition-colors"
                 style={{
                   backgroundColor: aiAnalysis ? "#8c52ff33" : "#8c52ff",
                   color: aiAnalysis ? "#8c52ff" : "white",
                 }}
               >
                 {analyzing ? (
-                  <span className="flex items-center gap-1.5">
+                  <span className="flex items-center gap-1">
                     <span className="inline-block w-3 h-3 border-2 border-white/30 border-t-white rounded-full animate-spin" />
-                    Analizando...
+                    <span className="hidden sm:inline">Analizando...</span>
                   </span>
                 ) : aiAnalysis ? (
-                  "Re-analizar IA"
+                  <span><span className="sm:hidden">IA</span><span className="hidden sm:inline">Re-analizar IA</span></span>
                 ) : (
-                  "Analizar con IA"
+                  <span><span className="sm:hidden">IA</span><span className="hidden sm:inline">Analizar con IA</span></span>
                 )}
               </button>
             )}
             <button
               onClick={() => setShowForm(true)}
-              className="px-3 py-1.5 text-white text-xs font-medium rounded transition-colors hover:opacity-90"
+              className="px-2 sm:px-3 py-1.5 text-white text-[10px] sm:text-xs font-medium rounded transition-colors hover:opacity-90"
               style={{ backgroundColor: "#00bf63" }}
             >
-              + Nuevo recuerdo
+              <span className="sm:hidden">+ Nuevo</span>
+              <span className="hidden sm:inline">+ Nuevo recuerdo</span>
             </button>
             <button
               onClick={handleLogout}
@@ -230,6 +187,41 @@ export default function Home() {
               Salir
             </button>
           </div>
+        </div>
+
+        {/* Fila 2: Filtros con scroll horizontal */}
+        <div className="px-3 pb-2 flex gap-1.5 overflow-x-auto scrollbar-hide">
+          <button
+            onClick={() => setFilterCategory(null)}
+            className={`px-2 py-1 rounded text-[10px] font-medium transition-all shrink-0 ${
+              filterCategory === null
+                ? "bg-slate-800 text-white"
+                : "bg-slate-200 text-slate-500 hover:text-slate-700"
+            }`}
+          >
+            Todas
+          </button>
+          {CATEGORIES.map((cat) => (
+            <button
+              key={cat.value}
+              onClick={() =>
+                setFilterCategory(
+                  filterCategory === cat.value ? null : cat.value
+                )
+              }
+              className={`px-2 py-1 rounded text-[10px] font-medium transition-all shrink-0 ${
+                filterCategory === cat.value
+                  ? "text-white ring-1 ring-white/50"
+                  : "text-slate-600 hover:text-slate-800"
+              }`}
+              style={{
+                backgroundColor:
+                  filterCategory === cat.value ? cat.color : cat.color + "18",
+              }}
+            >
+              {cat.label}
+            </button>
+          ))}
         </div>
       </header>
 

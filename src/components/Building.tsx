@@ -1407,7 +1407,7 @@ export default function Building({ floors, onFloorClick, aiAnalysis }: BuildingP
         <text x={svgW - 115} y={svgH - 43} fill={S.textColor} fontSize={9}
           fontFamily="'Helvetica Neue', Arial, sans-serif" textAnchor="middle" fontWeight="bold"
           letterSpacing={1}>
-          CAPAS — CORTE A-A&apos;
+          TELOVA — CORTE A-A&apos;
         </text>
         <text x={svgW - 215} y={svgH - 28} fill={S.textLight} fontSize={7}
           fontFamily="monospace">
