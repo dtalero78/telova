@@ -138,13 +138,10 @@ export default function Home() {
         <div className="px-4 py-2 flex items-center justify-between">
           <div className="flex items-center gap-6">
             <div className="flex items-center gap-2">
-              <img src="/logo.png" alt="Telova" className="h-8 w-auto" />
-              <div>
-                <h1 className="text-lg font-bold leading-tight" style={{ color: "#8c52ff" }}>Capas</h1>
-                <p className="text-slate-400 text-[10px]">
-                  {user.name}
-                </p>
-              </div>
+              <img src="/logo.png" alt="Telova" className="h-12 w-auto" />
+              <p className="text-slate-400 text-[10px]">
+                {user.name}
+              </p>
             </div>
 
             {/* Stats inline */}
