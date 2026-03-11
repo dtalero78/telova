@@ -5,6 +5,7 @@ const pool = new Pool({
   ssl: {
     rejectUnauthorized: false,
   },
+  connectionTimeoutMillis: 5000,
 });
 
 export default pool;
