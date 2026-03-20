@@ -1,7 +1,10 @@
-name: capas
+name: telova
 region: nyc
+domains:
+  - domain: telova.app
+    type: PRIMARY
 services:
-  - name: capas-web
+  - name: telova-web
     github:
       repo: dtalero78/telova
       branch: main

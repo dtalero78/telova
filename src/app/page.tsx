@@ -136,9 +136,9 @@ export default function Home() {
       {/* Header responsivo */}
       <header className="border-b border-slate-300 bg-white/95 backdrop-blur-sm z-40 shrink-0">
         {/* Fila 1: Logo, stats, acciones */}
-        <div className="px-3 py-2 flex items-center justify-between gap-2">
+        <div className="px-3 py-3 sm:py-2 flex items-center justify-between gap-2">
           <div className="flex items-center gap-3 min-w-0">
-            <img src="/logo.png" alt="Telova" className="h-8 sm:h-10 w-auto shrink-0" />
+            <img src="/logo.png" alt="Telova" className="h-10 sm:h-10 w-auto shrink-0" />
             <div className="flex items-center gap-2 text-[10px] sm:text-xs shrink-0">
               <span className="text-slate-500">
                 <span className="text-slate-800 font-bold">{events.length}</span> ev.

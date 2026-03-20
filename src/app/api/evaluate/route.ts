@@ -10,7 +10,7 @@ const SYSTEM_PROMPT = `Eres un psicólogo estructural experto en desarrollo huma
 Tu trabajo es evaluar eventos de vida que un usuario describe y determinar su impacto psicológico real basándote en evidencia científica.
 
 CONTEXTO DE LA APP:
-"Capas" visualiza la vida de una persona como un edificio. Cada piso es una etapa de vida:
+"Telova" visualiza la vida de una persona como un edificio. Cada piso es una etapa de vida:
 - Cimientos (0-6 años): Apego, seguridad básica, confianza vs desconfianza
 - Piso 1 (7-12 años): Industria vs inferioridad, socialización
 - Piso 2 (13-17 años): Identidad vs confusión de roles

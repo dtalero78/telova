@@ -13,7 +13,7 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: "Capas — Tu Historia Visualizada",
+  title: "Telova — Tu Historia Visualizada",
   description: "Descubre las capas que construyeron quien eres",
 };
 
