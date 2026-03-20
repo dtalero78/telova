@@ -54,28 +54,12 @@ interface RowVisual {
   ai?: FloorAnalysis;
 }
 
-/* ─── TETRIS SHAPES — Different block shapes based on impact ──────────── */
+/* ─── BLOCK SIZE — Impact determines rectangle size ───────────────────── */
 
-// Each shape is a set of cells [col, row] relative to origin
-const SHAPES = {
-  // Impact 1-2: single square
-  tiny: [[0, 0]],
-  // Impact 3-4: domino horizontal
-  small: [[0, 0], [1, 0]],
-  // Impact 5-6: L-shape
-  medium: [[0, 0], [0, 1], [1, 1]],
-  // Impact 7-8: T-shape
-  large: [[0, 0], [1, 0], [2, 0], [1, 1]],
-  // Impact 9-10: square 2x2
-  huge: [[0, 0], [1, 0], [0, 1], [1, 1]],
-};
-
-function getShape(impact: number): number[][] {
-  if (impact <= 2) return SHAPES.tiny;
-  if (impact <= 4) return SHAPES.small;
-  if (impact <= 6) return SHAPES.medium;
-  if (impact <= 8) return SHAPES.large;
-  return SHAPES.huge;
+function getBlockSize(impact: number, unit: number): { w: number; h: number } {
+  // Scale from 1 unit (impact 1) to 2.5 units (impact 10)
+  const scale = 0.8 + (impact / 10) * 1.2;
+  return { w: Math.round(unit * scale), h: Math.round(unit * scale) };
 }
 
 /* ─── PSEUDO-RANDOM ───────────────────────────────────────────────────── */
@@ -134,8 +118,6 @@ function TetrisBlock({
   onLeave: () => void;
   onClick: () => void;
 }) {
-  const shape = getShape(block.impact);
-  const cellSize = Math.min(block.w, block.h) / 2;
   const damage = block.isNegative ? block.impact / 10 : 0;
   const cracks = blockCracks(block.x, block.y, block.w, block.h, damage, floorIndex * 100 + blockIndex);
 
@@ -147,59 +129,47 @@ function TetrisBlock({
       onMouseLeave={onLeave}
       onClick={onClick}
     >
-      {/* Block cells */}
-      {shape.map(([cx, cy], ci) => {
-        const bx = block.x + cx * (cellSize + 1);
-        const by = block.y + cy * (cellSize + 1);
-        const bw = cellSize;
-        const bh = cellSize;
-
-        return (
-          <g key={ci}>
-            {/* Shadow */}
-            <rect
-              x={bx + 2} y={by + 2}
-              width={bw} height={bh}
-              rx={CFG.cornerR}
-              fill="rgba(0,0,0,0.1)"
-            />
-            {/* Main block */}
-            <rect
-              x={bx} y={by}
-              width={bw} height={bh}
-              rx={CFG.cornerR}
-              fill={block.color}
-              stroke={block.isNegative ? "#00000033" : "#ffffff33"}
-              strokeWidth={1}
-            />
-            {/* Highlight (top-left shine) */}
-            <rect
-              x={bx + 1} y={by + 1}
-              width={bw - 2} height={bh * 0.35}
-              rx={CFG.cornerR - 1}
-              fill="rgba(255,255,255,0.25)"
-            />
-            {/* Negative: darker bottom edge */}
-            {block.isNegative && (
-              <rect
-                x={bx} y={by + bh * 0.7}
-                width={bw} height={bh * 0.3}
-                rx={CFG.cornerR}
-                fill="rgba(0,0,0,0.15)"
-              />
-            )}
-          </g>
-        );
-      })}
+      {/* Shadow */}
+      <rect
+        x={block.x + 2} y={block.y + 2}
+        width={block.w} height={block.h}
+        rx={CFG.cornerR}
+        fill="rgba(0,0,0,0.1)"
+      />
+      {/* Main block */}
+      <rect
+        x={block.x} y={block.y}
+        width={block.w} height={block.h}
+        rx={CFG.cornerR}
+        fill={block.color}
+        stroke={block.isNegative ? "#00000033" : "#ffffff33"}
+        strokeWidth={1}
+      />
+      {/* Highlight (top shine) */}
+      <rect
+        x={block.x + 1} y={block.y + 1}
+        width={block.w - 2} height={block.h * 0.35}
+        rx={CFG.cornerR - 1}
+        fill="rgba(255,255,255,0.25)"
+      />
+      {/* Negative: darker bottom edge */}
+      {block.isNegative && (
+        <rect
+          x={block.x} y={block.y + block.h * 0.7}
+          width={block.w} height={block.h * 0.3}
+          rx={CFG.cornerR}
+          fill="rgba(0,0,0,0.15)"
+        />
+      )}
 
       {/* Impact indicator */}
       <text
-        x={block.x + cellSize / 2}
-        y={block.y + cellSize / 2 + 1}
+        x={block.x + block.w / 2}
+        y={block.y + block.h / 2 + 1}
         textAnchor="middle"
         dominantBaseline="central"
         fill="white"
-        fontSize={Math.max(8, cellSize * 0.35)}
+        fontSize={Math.max(8, block.w * 0.3)}
         fontWeight="bold"
         style={{ pointerEvents: "none", textShadow: "0 1px 2px rgba(0,0,0,0.3)" }}
       >
@@ -315,11 +285,9 @@ export default function Building({ floors, onFloorClick, aiAnalysis }: BuildingP
 
       for (let ei = 0; ei < events.length; ei++) {
         const ev = events[ei];
-        const shape = getShape(ev.impact);
-        const cols = Math.max(...shape.map(s => s[0])) + 1;
-        const rows2 = Math.max(...shape.map(s => s[1])) + 1;
-        const bw = cols * (cellSize + 1);
-        const bh = rows2 * (cellSize + 1);
+        const size = getBlockSize(ev.impact, cellSize);
+        const bw = size.w;
+        const bh = size.h;
 
         // Wrap to next sub-row if exceeds grid width
         if (bx + bw > margin.left + gridW) {
